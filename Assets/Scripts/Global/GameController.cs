@@ -1,4 +1,5 @@
 using Assets.Scripts.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,16 +15,6 @@ public class GameController : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    /// <summary>
-    /// Active level when player select a level this value will change automatically.
-    /// </summary>
-    public int CurrentLevel { get; set; }
-
-    /// <summary>
-    /// Is this current level is a custom level.
-    /// </summary>
-    public LevelStates CurrentLevelState { get; set; }
 
     [Header("User defined custom levels")]
     public List<LevelEditorModel> CustomLevels = new List<LevelEditorModel>();
@@ -43,6 +34,9 @@ public class GameController : MonoBehaviour
     [Header("When user click rate us redirect url")]
     public string GooglePlayUrl;
 
+    [Header("Loading button while game is loading.")]
+    public GameObject GOLoading;
+
     private void Start()
     {
         // We order with order index.
@@ -55,16 +49,14 @@ public class GameController : MonoBehaviour
         this.CustomLevels = FileBrowserController.Instance.LoadConfigFiles("*.config").OrderBy(x => x.OrderIndex).ToList();
     }
 
-    public void ActivateLevel(LevelStates levelState, int level)
+    public void ActivateLevel(LevelEditorModel levelData, LevelStates levelState, int level)
     {
-        // We set the level to the max level.
-        GameController.Instance.CurrentLevel = level;
-
-        // Set as user defined level.
-        GameController.Instance.CurrentLevelState = levelState;
-
         // We activate the level.
-        GameViewController.Instance.ActivateView(GameViews.CurrentLevel);
+        CurrentLevelGameViewController currentLevel = (CurrentLevelGameViewController)GameViewController.Instance.ActivateView(GameViews.CurrentLevel);
+
+        // We load the level.
+        currentLevel.LoadLevel(levelData, levelState, level);
+
     }
 
     public void RemoveLevel(LevelEditorModel model)
@@ -81,6 +73,48 @@ public class GameController : MonoBehaviour
         // We refresh the view.
         if (CustomLevelMenuGameViewController.Instance != null && CustomLevelMenuGameViewController.Instance.gameObject.activeSelf)
             CustomLevelMenuGameViewController.Instance.OnGameViewActivated();
+    }
+
+    public IEnumerator DownloadAndActivateLevel(string fileName)
+    {
+        // We wait for the end of frame to prevent exceptions like null references.
+        yield return new WaitForEndOfFrame();
+
+        // We activating the loading view.
+        GOLoading.SetActive(true);
+
+        LevelEditorModel levelConfiguration = null;
+
+        // We download config from the server.
+        FirebaseStorageController.Instance.DownloadUrlForConfig($"{fileName}.config", (LevelEditorModel levelConfig) =>
+         {
+             // We bind the configuration.
+             levelConfiguration = levelConfig;
+         });
+
+        // We wait until configuration coming.
+        yield return new WaitUntil(() => levelConfiguration != null);
+
+        // We wait until level income.
+        Texture2D levelTexture = null;
+
+        // We download texture from the server.
+        FirebaseStorageController.Instance.DownloadUrlForTexture(levelConfiguration.ImageUrl, (Texture2D texture) =>
+        {
+            levelTexture = texture;
+        });
+
+        // We wait until level is in coming.
+        yield return new WaitUntil(() => levelTexture != null);
+
+        // We bind the texture.
+        levelConfiguration.RemoteTexture = levelTexture;
+        
+        // We activating the loading view.
+        GOLoading.SetActive(false);
+
+        // We activate the last level.
+        ActivateLevel(levelConfiguration, LevelStates.UserDefined, 0);
     }
 
 }

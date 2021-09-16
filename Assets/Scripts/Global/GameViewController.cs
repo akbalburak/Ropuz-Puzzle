@@ -77,4 +77,25 @@ public class GameViewController : MonoBehaviour
         // We return the view.
         return iOpenedGameView;
     }
+
+    public void OnClickCustomLevelMenuView()
+    {
+        GameViewController.Instance.ActivateView(global::GameViews.CustomLevelMenu);
+    }
+
+    public void OnClickChangeLanguage()
+    {
+        // We are showing the language view.
+        GameViewController.Instance.ActivateView(global::GameViews.Language);
+    }
+
+    public void OnClickLevelMenuView()
+    {
+        GameViewController.Instance.ActivateView(global::GameViews.LevelMenu);
+    }
+
+    public void OnClickLoadLevelFromServer()
+    {
+        GameViewController.Instance.ActivateView(global::GameViews.DownloadLevelMenu);
+    }
 }

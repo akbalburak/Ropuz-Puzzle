@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "433691863997",
+    "project_id": "test-1576579639708",
+    "storage_bucket": "test-1576579639708.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433691863997:android:6f78ebd3b9c34af0edc0d4",
+        "android_client_info": {
+          "package_name": "com.abbasgamestudio.RopuzBulmaca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433691863997-1otj5onq2l7uj1pka45ua0jn76bujr56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0OuqkC-3hQx0tf5eubdZOLjP7sAiptRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433691863997-1otj5onq2l7uj1pka45ua0jn76bujr56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

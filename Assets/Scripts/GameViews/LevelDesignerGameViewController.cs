@@ -423,7 +423,7 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         int targetLevel = GameController.Instance.CustomLevels.IndexOf(UpdateModel) + 1;
 
         // We activate the level.
-        GameController.Instance.ActivateLevel(LevelStates.UserDefined, targetLevel);
+        GameController.Instance.ActivateLevel(UpdateModel, LevelStates.UserDefined, targetLevel);
     }
 
     #region Error Management

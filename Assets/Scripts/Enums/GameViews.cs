@@ -8,5 +8,6 @@ public enum GameViews
     CurrentLevel,
     Language,
     LevelEditor,
-    CustomLevelMenu
+    CustomLevelMenu,
+    DownloadLevelMenu
 }

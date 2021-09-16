@@ -42,8 +42,17 @@ namespace Assets.Scripts.Models
         [Header("Score point when user win the playground.")]
         public int ScoreOnWin;
         
-        public Texture2D GetTexture()
+        /// <summary>
+        /// Downloaded texture.
+        /// </summary>
+        public Texture2D RemoteTexture { get; set; }
+
+        public Texture2D LoadTextureFromFile()
         {
+            // if remote texture exists just return it.
+            if (RemoteTexture != null)
+                return RemoteTexture;
+
             // if system defined? then we will load from the resources folder.
             if (IsSystemDefined)
                 return Resources.Load<Texture2D>($"SystemLevels/{ImageUrl}");
@@ -66,6 +75,20 @@ namespace Assets.Scripts.Models
 
             // We return the texture.
             return texture;
+        }
+
+        public LevelEditorModel Clone()
+        {
+            return new LevelEditorModel
+            {
+                AlwaysRandom = this.AlwaysRandom,
+                ColCount = this.ColCount,
+                LevelName = this.LevelName,
+                RowCount = this.RowCount,
+                Size = this.Size,
+                SeedValue = this.SeedValue,
+                UniqueID = Guid.NewGuid().ToString()
+            };
         }
     }
 }

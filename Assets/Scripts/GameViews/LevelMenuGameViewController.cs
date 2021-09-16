@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,12 +41,19 @@ public class LevelMenuGameViewController : MonoBehaviour, IGameViewPanel
             else // Otherwise we are going to close the button.
                 levelButton.interactable = false;
 
-            // When player click the button.
-            levelButton.onClick.AddListener(() =>
+            // We make sure there is exists item in the list.
+            if (levelIndex < GameController.Instance.SystemLevels.Count)
             {
-                // We activate the level.
-                GameController.Instance.ActivateLevel(LevelStates.SystemDefined, levelIndex);
-            });
+                // When player click the button.
+                levelButton.onClick.AddListener(() =>
+                {
+                    // We get the level inforamtions.
+                    LevelEditorModel levelData = GameController.Instance.SystemLevels[levelIndex - 1];
+
+                    // We activate the level.
+                    GameController.Instance.ActivateLevel(levelData, LevelStates.SystemDefined, levelIndex);
+                });
+            }
         }
 
         // Button is going to be on if sound is active. Otherwise not.
@@ -89,14 +97,4 @@ public class LevelMenuGameViewController : MonoBehaviour, IGameViewPanel
         Application.OpenURL(GameController.Instance.GooglePlayUrl);
     }
 
-    public void OnClickChangeLanguage()
-    {
-        // We are showing the language view.
-        GameViewController.Instance.ActivateView(GameViews.Language);
-    }
-
-    public void OnClickCustomLevelMenuView()
-    {
-        GameViewController.Instance.ActivateView(GameViews.CustomLevelMenu);
-    }
 }

@@ -41,6 +41,16 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     public GameObject CustomLevelRotateItem;
 
     /// <summary>
+    /// Active level when player select a level this value will change automatically.
+    /// </summary>
+    public int CurrentLevel { get; set; }
+
+    /// <summary>
+    /// Is this current level is a custom level.
+    /// </summary>
+    public LevelStates CurrentLevelState { get; set; }
+
+    /// <summary>
     /// Custom playground manager.
     /// </summary>
     public PlaygroundController CPGC { get; set; }
@@ -57,14 +67,21 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 
     public void OnGameViewActivated()
     {
+    }
+
+    public void LoadLevel(LevelEditorModel levelData, LevelStates levelState, int currentLevel)
+    {
+        // Level state.
+        this.CurrentLevelState = levelState;
+
+        // Level information.
+        this.CurrentLevel = currentLevel;
+
         // if a custom level we will load from custom levels of user.
-        if (GameController.Instance.CurrentLevelState == LevelStates.UserDefined)
-            LevelData = GameController.Instance.CustomLevels[GameController.Instance.CurrentLevel - 1];
-        else // Otherwise we will load from system levels.
-            LevelData = GameController.Instance.SystemLevels[GameController.Instance.CurrentLevel - 1];
+        this.LevelData = levelData;
 
         // We get the texture.
-        ShownLevelTexture2D = LevelData.GetTexture();
+        ShownLevelTexture2D = LevelData.LoadTextureFromFile();
 
         // if already exists we destroy previous one.
         if (CPGC != null)
@@ -103,7 +120,7 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 
         // We delete all the older pieces.
         foreach (Transform pieces in piecesGridContent)
-            Destroy(piecesGridContent.gameObject);
+            Destroy(pieces.gameObject);
 
         // Textures are loading from bottom left corner.
         for (int row = LevelData.RowCount - 1; row >= 0; row--)
@@ -182,7 +199,7 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     public void OnClickLeave()
     {
         // if system defined game is already playing then return the system levels.
-        if (GameController.Instance.CurrentLevelState == LevelStates.SystemDefined)
+        if (this.CurrentLevelState == LevelStates.SystemDefined)
             GameViewController.Instance.ActivateView(GameViews.LevelMenu);
         else // Otherwise return user defined level page.
             GameViewController.Instance.ActivateView(GameViews.CustomLevelMenu);
@@ -191,7 +208,7 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     public void RefreshUI()
     {
         // We are printing the current level.
-        TXTCurrentLevel.text = $"{GameController.Instance.CurrentLevel}";
+        TXTCurrentLevel.text = $"{this.CurrentLevel}";
 
         // We are also texting user score.
         TXTUserScore.text = $"{SaveLoadController.Instance.SaveData.ActionScore}";
@@ -200,26 +217,26 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     public void CheckPrevAndNextButtons()
     {
         // When current level is more than one buton will be activated.
-        BTNPreviousLevel.interactable = GameController.Instance.CurrentLevel > 1;
+        BTNPreviousLevel.interactable = this.CurrentLevel > 1;
 
         // We are receiving the max level in the list.
         int maxLevel;
 
         // if is a custome level then we will get the custom levels count.
-        if (GameController.Instance.CurrentLevelState == LevelStates.UserDefined)
+        if (CurrentLevelState == LevelStates.UserDefined)
             maxLevel = GameController.Instance.CustomLevels.Count;
         else // otherwise we will receive system levels.
             maxLevel = GameController.Instance.SystemLevels.Count;
 
         // is user in the max level.
-        bool isMaxLevel = GameController.Instance.CurrentLevel >= maxLevel;
+        bool isMaxLevel = this.CurrentLevel >= maxLevel;
 
         // is user ready to go next level.
         bool isUserReadyToGoNextLevel = true;
 
         // if current level is system level than we have to ensure level is unlocked.
-        if (GameController.Instance.CurrentLevelState == LevelStates.SystemDefined)
-            isUserReadyToGoNextLevel = SaveLoadController.Instance.SaveData.MaxReachedLevel > GameController.Instance.CurrentLevel;
+        if (CurrentLevelState == LevelStates.SystemDefined)
+            isUserReadyToGoNextLevel = SaveLoadController.Instance.SaveData.MaxReachedLevel > this.CurrentLevel;
 
         // We are checking; not to max level and ready to go state.
         BTNNextLevel.interactable = !isMaxLevel && isUserReadyToGoNextLevel;
@@ -231,16 +248,16 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         int maxLevel;
 
         // if is a custome level then we will get the custom levels count.
-        if (GameController.Instance.CurrentLevelState == LevelStates.UserDefined)
+        if (CurrentLevelState == LevelStates.UserDefined)
             maxLevel = GameController.Instance.CustomLevels.Count;
         else // otherwise we will receive system levels.
             maxLevel = GameController.Instance.SystemLevels.Count;
 
         // We are checking the borders; Min level 1 and max level in the list.
-        int availableLevel = Mathf.Clamp(GameController.Instance.CurrentLevel + 1, 1, maxLevel);
+        int availableLevel = Mathf.Clamp(this.CurrentLevel + 1, 1, maxLevel);
 
         // We are going to level.
-        GameController.Instance.CurrentLevel = availableLevel;
+        this.CurrentLevel = availableLevel;
 
         // We are activating ads.
         StartCoroutine(AdsController.Instance.AdsInterstitial.ShowInterstitial());
@@ -252,14 +269,14 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     public void OnClickPreviousLevel()
     {
         // We are going previous level.
-        int prevLevel = GameController.Instance.CurrentLevel - 1;
+        int prevLevel = this.CurrentLevel - 1;
 
         // if previous level is out of index  which means smaller than 1, clamp it.
         if (prevLevel < 1)
             prevLevel = 1;
 
         // We are going to level.
-        GameController.Instance.CurrentLevel = prevLevel;
+        this.CurrentLevel = prevLevel;
 
         // We are activating the level.
         OnGameViewActivated();

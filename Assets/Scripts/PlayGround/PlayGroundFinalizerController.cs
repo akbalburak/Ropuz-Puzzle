@@ -76,8 +76,8 @@ public class PlayGroundFinalizerController : MonoBehaviour
         LevelEditorModel currentLevelData = CurrentLevelGameViewController.Instance.LevelData;
 
         // We are updating max level if it is smaller.
-        if (GameController.Instance.CurrentLevel == SaveLoadController.Instance.SaveData.MaxReachedLevel)
-            SaveLoadController.Instance.SaveData.MaxReachedLevel = GameController.Instance.CurrentLevel + 1;
+        if (CurrentLevelGameViewController.Instance.CurrentLevel == SaveLoadController.Instance.SaveData.MaxReachedLevel)
+            SaveLoadController.Instance.SaveData.MaxReachedLevel = CurrentLevelGameViewController.Instance.CurrentLevel + 1;
 
         // We are reducing one point.
         SaveLoadController.Instance.SaveData.ActionScore += currentLevelData.ScoreOnWin;

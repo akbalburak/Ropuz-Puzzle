@@ -117,4 +117,6 @@ public class FileBrowserController : MonoBehaviour
         if (File.Exists($"{CustomLevelFolder}/{fileName}"))
             File.Delete($"{CustomLevelFolder}/{fileName}");
     }
+
+    public string GetRandomFilename() => $"{DateTime.UtcNow.ToFileTimeUtc()}{UnityEngine.Random.Range(0, 10000)}";
 }
