@@ -3079,7 +3079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -300}
+  m_AnchoredPosition: {x: 0, y: -310}
   m_SizeDelta: {x: 374, y: 148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &256027022
@@ -3162,7 +3162,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 256027022}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1677953655}
+        m_TargetAssemblyTypeName: CustomLevelDetailViewController, Assembly-CSharp
+        m_MethodName: OnClickPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &257344227
 GameObject:
   m_ObjectHideFlags: 0
@@ -4777,11 +4789,11 @@ RectTransform:
   m_Children:
   - {fileID: 1807343389}
   m_Father: {fileID: 1677953652}
-  m_RootOrder: 9
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -106, y: -571}
+  m_AnchoredPosition: {x: -106, y: -570}
   m_SizeDelta: {x: 239.36, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419606692
@@ -6371,7 +6383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -446}
+  m_AnchoredPosition: {x: 0, y: -445}
   m_SizeDelta: {x: 299.2, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546267694
@@ -6454,7 +6466,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 546267694}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1677953655}
+        m_TargetAssemblyTypeName: CustomLevelDetailViewController, Assembly-CSharp
+        m_MethodName: OnClickEdit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &556381813
 GameObject:
   m_ObjectHideFlags: 0
@@ -6704,7 +6728,7 @@ RectTransform:
   m_Children:
   - {fileID: 1877867976}
   m_Father: {fileID: 1677953652}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6792,10 +6816,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1677953651}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1677953655}
+        m_TargetAssemblyTypeName: CustomLevelDetailViewController, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9386,7 +9410,7 @@ RectTransform:
   - {fileID: 1741963651}
   - {fileID: 839761193}
   m_Father: {fileID: 1677953652}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -15051,7 +15075,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 140, y: -571}
+  m_AnchoredPosition: {x: 140, y: -570}
   m_SizeDelta: {x: 239.36, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1146033874
@@ -15581,7 +15605,7 @@ RectTransform:
   m_Children:
   - {fileID: 705755154}
   m_Father: {fileID: 1677953652}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -20863,10 +20887,10 @@ RectTransform:
   - {fileID: 546267693}
   - {fileID: 2018969487}
   - {fileID: 1146033873}
+  - {fileID: 419606691}
   - {fileID: 572172556}
   - {fileID: 1211075421}
   - {fileID: 760889942}
-  - {fileID: 419606691}
   m_Father: {fileID: 1702164495}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25377,7 +25401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 140, y: -571}
+  m_AnchoredPosition: {x: 140, y: -570}
   m_SizeDelta: {x: 239.36, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2018969488

@@ -262,8 +262,17 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         // We are activating ads.
         StartCoroutine(AdsController.Instance.AdsInterstitial.ShowInterstitial());
 
+        // Next level model.
+        LevelEditorModel nextLevel = null;
+
+        // We are looking for the next level.
+        if (CurrentLevelState == LevelStates.UserDefined)
+            nextLevel = GameController.Instance.CustomLevels[this.CurrentLevel - 1];
+        else
+            nextLevel = GameController.Instance.SystemLevels[this.CurrentLevel - 1];
+
         // We are activating the level.
-        OnGameViewActivated();
+        LoadLevel(nextLevel, this.CurrentLevelState, this.CurrentLevel);
     }
 
     public void OnClickPreviousLevel()
@@ -277,9 +286,17 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 
         // We are going to level.
         this.CurrentLevel = prevLevel;
+        // Next level model.
+        LevelEditorModel previousLevel = null;
+
+        // We are looking for the next level.
+        if (CurrentLevelState == LevelStates.UserDefined)
+            previousLevel = GameController.Instance.CustomLevels[this.CurrentLevel - 1];
+        else
+            previousLevel = GameController.Instance.SystemLevels[this.CurrentLevel - 1];
 
         // We are activating the level.
-        OnGameViewActivated();
+        LoadLevel(previousLevel, this.CurrentLevelState, this.CurrentLevel);
     }
 
     public void OnClickHint()
