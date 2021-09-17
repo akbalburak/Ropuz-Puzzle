@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +30,17 @@ public class PlaygroundController : MonoBehaviour
     [Header("All the rotation buttons.")]
     public List<Button> BTNRotations;
 
+    [Header("Level data to load informations.")]
+    public LevelEditorModel LevelData;
+
     [Header("Items that will be rotated.")]
     public List<PlayGroundItemController> Items;
 
-    public void LoadPlayGroundGrid()
+    public void LoadPlayGroundGrid(LevelEditorModel levelData)
     {
+        // We set the level data.
+        this.LevelData = levelData;
+
         // Playground items.
         Items = GetComponentsInChildren<PlayGroundItemController>().ToList();
 
@@ -175,7 +182,18 @@ public class PlaygroundController : MonoBehaviour
 
         // When true call finalizer.
         if (isCompleted)
+        {
+            // We remove history if the level completed.
+            GameHistoryController.Instance.RemoveHistory(this);
+
+            // We are finalizing the playground.
             PGFC.FinalizeThePlayGround();
+        }
+        else
+        {
+            // We remove history if the level completed.
+            GameHistoryController.Instance.SetHistory(this);
+        }
     }
 
     public void ShufflePlayground(int? seed = null)
@@ -204,5 +222,26 @@ public class PlaygroundController : MonoBehaviour
 
         // We update the list.
         this.Items = randomList;
+    }
+
+    public void ContinueToLevel()
+    {
+        // We get the history data.
+        GameHistoryModel historyValue = GameHistoryController.Instance.GetHistory(this.LevelData);
+
+        // We will store the items with order indexes.
+        List<Tuple<int, PlayGroundItemController>> unOrderedItems = new List<Tuple<int, PlayGroundItemController>>();
+
+        this.Items = this.Items.OrderBy(x => historyValue.Names.IndexOf(x.name)).ToList();
+
+        // We loop all the items.
+        foreach (PlayGroundItemController playItem in this.Items.OrderBy(x => historyValue.Names.IndexOf(x.name)))
+        {
+            // we get the sibling index.
+            int siblingIndex = historyValue.Names.IndexOf(playItem.name);
+
+            // We change its location.
+            playItem.transform.SetSiblingIndex(siblingIndex);
+        }
     }
 }

@@ -16,6 +16,10 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         else
             Destroy(gameObject);
     }
+
+    [Header("Upload manager.")]
+    public CustomLevelDetailUploadViewController GOUpload;
+
     [Header("Current selected texture.")]
     public Texture2D CurrentSelectedTexture;
 
@@ -66,6 +70,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
     [Header("Play button.")]
     public GameObject BTNPlay;
+
+    [Header("Share button.")]
+    public Button BTNShare;
 
     /// <summary>
     /// We will bind here when we make an update.
@@ -140,6 +147,10 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
         // We refresh the ui.
         RefreshUI();
+
+        // We tell we changed size.
+        OnSizeChanged(DDSizes.value);
+
     }
 
     public void OnRowCountChanged(float value)
@@ -283,7 +294,7 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         texture.Apply();
 
         // Root file name.
-        string filename = $"{DateTime.Now.ToFileTimeUtc()}_{TXTLevelName.text.Trim()}";
+        string filename = $"{DateTime.Now.ToFileTimeUtc()}";
 
         // Data file name, texture.
         string dataFileName = $"{filename}.data";
@@ -395,6 +406,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
         // We enable the play button.
         BTNPlay.gameObject.SetActive(true);
+
+        // We enable share button when playable ready.
+        BTNShare.interactable = true;
     }
 
     public void SetDesignerAsSaveable()
@@ -405,6 +419,8 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         // We enable the play button.
         BTNPlay.gameObject.SetActive(false);
 
+        // We enable share button when playable ready.
+        BTNShare.interactable = false;
     }
 
     public void OnClickPlay()
@@ -424,6 +440,15 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
         // We activate the level.
         GameController.Instance.ActivateLevel(UpdateModel, LevelStates.UserDefined, targetLevel);
+    }
+
+    public void OnClickShare()
+    {
+        // We create the uploader.
+        CustomLevelDetailUploadViewController uploader = Instantiate(GOUpload, transform).GetComponent<CustomLevelDetailUploadViewController>();
+
+        // We activate the share view.
+        uploader.Show(this.UpdateModel);
     }
 
     #region Error Management

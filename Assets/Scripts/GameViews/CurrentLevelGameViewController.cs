@@ -40,6 +40,9 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     [Header("Used buttons to rotate objects.")]
     public GameObject CustomLevelRotateItem;
 
+    [Header("Continue question when level history exists.")]
+    public GameObject GOContinueQuestion;
+
     /// <summary>
     /// Active level when player select a level this value will change automatically.
     /// </summary>
@@ -104,6 +107,10 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 
         // We check button states again.
         CheckPrevAndNextButtons();
+
+        // if not continue just shuffle and load level.
+        if (GameHistoryController.Instance.CheckIsHistoryExists(this.LevelData))
+            AskToContinue();
     }
 
     public void OnGameViewDeactivated()
@@ -121,6 +128,9 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         // We delete all the older pieces.
         foreach (Transform pieces in piecesGridContent)
             Destroy(pieces.gameObject);
+
+        // Name counter to save level state.
+        int nameCounter = 1;
 
         // Textures are loading from bottom left corner.
         for (int row = LevelData.RowCount - 1; row >= 0; row--)
@@ -154,6 +164,12 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 
                 // First step is resize the texture.
                 playgroundTexture.texture = texture;
+
+                // Set the player name.
+                playgroundItem.transform.name = $"{nameCounter}";
+
+                // We increase the name counter.
+                nameCounter++;
             }
         }
 
@@ -175,15 +191,15 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         piecesRotatorContent.GetComponent<GridLayoutGroup>().constraintCount = LevelData.ColCount - 1;
 
         // We create the grid system.
-        CPGC.LoadPlayGroundGrid();
+        CPGC.LoadPlayGroundGrid(this.LevelData);
 
         // We save the correct format.
         CPGC.CorrectFormationItems = CPGC.Items.ToList();
 
-        // After we create the grid system we will generate the .
+        // if random is enabled then we will shuffle it.
         if (LevelData.AlwaysRandom)
             CPGC.ShufflePlayground();
-        else
+        else // if not enabled we will load with seed value.
             CPGC.ShufflePlayground(LevelData.SeedValue);
 
         // We update the ui.
@@ -263,7 +279,7 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         StartCoroutine(AdsController.Instance.AdsInterstitial.ShowInterstitial());
 
         // Next level model.
-        LevelEditorModel nextLevel = null;
+        LevelEditorModel nextLevel;
 
         // We are looking for the next level.
         if (CurrentLevelState == LevelStates.UserDefined)
@@ -287,7 +303,7 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         // We are going to level.
         this.CurrentLevel = prevLevel;
         // Next level model.
-        LevelEditorModel previousLevel = null;
+        LevelEditorModel previousLevel;
 
         // We are looking for the next level.
         if (CurrentLevelState == LevelStates.UserDefined)
@@ -305,4 +321,23 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         StartCoroutine(AdsController.Instance.AdsReward.ShowRewardedAd());
     }
 
+    public void AskToContinue() => GOContinueQuestion.SetActive(true);
+
+    public void OnClickContinue()
+    {
+        // We disable the question view.
+        GOContinueQuestion.SetActive(false);
+
+        // We continue to level.
+        CPGC.ContinueToLevel();
+    }
+
+    public void OnClickDontContinue()
+    {
+        // We disable the panel.
+        GOContinueQuestion.SetActive(false);
+
+        // We remove the history value.
+        GameHistoryController.Instance.RemoveHistory(CPGC);
+    }
 }

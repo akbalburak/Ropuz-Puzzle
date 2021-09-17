@@ -117,4 +117,20 @@ public class GameController : MonoBehaviour
         ActivateLevel(levelConfiguration, LevelStates.UserDefined, 0);
     }
 
+
+    void Update()
+    {
+        // Make sure user is on Android platform
+        if (Application.platform == RuntimePlatform.Android)
+        {
+
+            // Check if Back was pressed this frame
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+
+                // Quit the application
+                Application.Quit();
+            }
+        }
+    }
 }

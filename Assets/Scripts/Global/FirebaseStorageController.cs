@@ -3,7 +3,6 @@ using Firebase.Extensions;
 using Firebase.Storage;
 using System;
 using System.Collections;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -150,6 +149,7 @@ public class FirebaseStorageController : MonoBehaviour
     }
 
     #endregion
+    
     public void DownloadSize(string key, Action<long> onCallBack)
     {
         // Fetch the download URL
