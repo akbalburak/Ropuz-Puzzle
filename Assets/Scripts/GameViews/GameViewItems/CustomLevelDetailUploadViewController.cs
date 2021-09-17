@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models;
+﻿using Assets.Scripts.Extends;
+using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
     [Header("Loading state.")]
     public GameObject GOLoading;
 
@@ -110,19 +112,26 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
 
     public void OnClickShare()
     {
-        StartCoroutine(GetRandomCombinedTexture((Texture2D texture) =>
-        {
-            string content = string.Empty;
+        // Original image texture.
+        Texture2D originalTexture = this.LevelData.LoadTextureFromFile();
 
-            // if turkish then text turkish content.
-            if (SaveLoadController.Instance.SaveData.Language == Languages.Turkish)
-                content = "Bulmacayı çözebilir misin?";
-            else
-                content = "Can you solve the puzzle?";
+        //Rate to multiply with size.
+        int rate = (originalTexture.width / 128) + 1;
 
-            // We share the puzzle.
-            ShareController.Instance.Share(texture, content, this.INPUploadUrl.text);
-        }));
+        // We get the texture of selected image.
+        Texture2D textureOfUploadedImage = TextureExtensions.Blur(originalTexture, 10, rate * 2);
+
+        string content;
+
+        // if turkish then text turkish content.
+        if (SaveLoadController.Instance.SaveData.Language == Languages.Turkish)
+            content = "Bulmacayı çözebilir misin?";
+        else
+            content = "Can you solve the puzzle?";
+
+        // We share the puzzle.
+        ShareController.Instance.Share(textureOfUploadedImage, content, this.INPUploadUrl.text);
+
     }
 
     public void Close()
@@ -136,7 +145,7 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
         INPUploadUrl.text.CopyToClipboard();
     }
 
-    public IEnumerator GetRandomCombinedTexture(Action<Texture2D> onTextureSelected)
+    /*public IEnumerator GetRandomCombinedTexture(Action<Texture2D> onTextureSelected)
     {
         // We have to weait end of frame.
         yield return new WaitForEndOfFrame();
@@ -248,7 +257,6 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
         Items = randomList;
 
         // We have to weait end of frame.
-        yield return new WaitForSeconds(.1f);
         yield return new WaitForEndOfFrame();
 
         int offsetFromBottom = 100;
@@ -260,7 +268,7 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
         Texture2D capturedScreen = new Texture2D(Screen.width, Screen.height);
 
         // We load the image.
-        capturedScreen.LoadImage(screenShot.EncodeToJPG(), false);
+        capturedScreen.LoadImage(NativeGallery.GetTextureBytes(screenShot, true));
 
         // We apply changes we make.
         capturedScreen.Apply();
@@ -289,5 +297,5 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
         // We get the capture.
         onTextureSelected.Invoke(clippedTexture);
     }
-
+    */
 }
