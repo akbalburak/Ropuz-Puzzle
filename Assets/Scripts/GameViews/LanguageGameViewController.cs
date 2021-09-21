@@ -23,6 +23,11 @@ public class LanguageGameViewController : MonoBehaviour, IGameViewPanel
             GameViewController.Instance.ActivateView(GameViews.LevelMenu);
     }
 
+    public void OnClickBackButton()
+    {
+        GameViewController.Instance.ActivateView(PreviousGameView);
+    }
+
     public void OnGameViewActivated()
     {
     }

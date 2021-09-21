@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "433691863997",
-    "project_id": "test-1576579639708",
-    "storage_bucket": "test-1576579639708.appspot.com"
+    "project_number": "148228887130",
+    "project_id": "rotate-puzzle-4da81",
+    "storage_bucket": "rotate-puzzle-4da81.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:433691863997:android:6f78ebd3b9c34af0edc0d4",
+        "mobilesdk_app_id": "1:148228887130:android:28cf367b3f7968b937be63",
         "android_client_info": {
-          "package_name": "com.abbasgamestudio.RopuzBulmaca"
+          "package_name": "com.adabassarstudios.ropuz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433691863997-1otj5onq2l7uj1pka45ua0jn76bujr56.apps.googleusercontent.com",
+          "client_id": "148228887130-nquttohvh7vo5jfgc13ae686gokbmivg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA0OuqkC-3hQx0tf5eubdZOLjP7sAiptRo"
+          "current_key": "AIzaSyABbX8SEGaPKOZ9nNWKfnvLWZe8_N8eCgA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "433691863997-1otj5onq2l7uj1pka45ua0jn76bujr56.apps.googleusercontent.com",
+              "client_id": "148228887130-nquttohvh7vo5jfgc13ae686gokbmivg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
