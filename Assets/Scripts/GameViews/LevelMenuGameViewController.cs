@@ -42,7 +42,7 @@ public class LevelMenuGameViewController : MonoBehaviour, IGameViewPanel
                 levelButton.interactable = false;
 
             // We make sure there is exists item in the list.
-            if (levelIndex < GameController.Instance.SystemLevels.Count)
+            if (levelIndex <= GameController.Instance.SystemLevels.Count)
             {
                 // When player click the button.
                 levelButton.onClick.AddListener(() =>

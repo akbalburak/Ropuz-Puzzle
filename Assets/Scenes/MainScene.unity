@@ -5173,7 +5173,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9aa4a23903734224db89a41082c8b61d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7a38abbdbf2d5c4aa13e287b64584dc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11699,7 +11699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &921780873
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12076,11 +12076,11 @@ MonoBehaviour:
     UniqueID: 
     RowCount: 2
     ColCount: 2
-    Size: 200
+    Size: 300
     AlwaysRandom: 0
-    LevelName: Spiderman
-    ImageUrl: Spiderman
-    ConfigFileName: Spiderman
+    LevelName: Level 1
+    ImageUrl: level-1
+    ConfigFileName: level-1
     SeedValue: 12
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12088,11 +12088,11 @@ MonoBehaviour:
     UniqueID: 
     RowCount: 2
     ColCount: 3
-    Size: 150
+    Size: 200
     AlwaysRandom: 0
-    LevelName: Thor
-    ImageUrl: Thor
-    ConfigFileName: Thor
+    LevelName: Level 2
+    ImageUrl: level-2
+    ConfigFileName: level-2
     SeedValue: 4
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12102,33 +12102,33 @@ MonoBehaviour:
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: Ironman
-    ImageUrl: Ironman
-    ConfigFileName: Ironman
+    LevelName: Level 3
+    ImageUrl: level-3
+    ConfigFileName: level-3
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
   - OrderIndex: 4
     UniqueID: 
-    RowCount: 4
+    RowCount: 3
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: Hulk
-    ImageUrl: Hulk
-    ConfigFileName: Hulk
+    LevelName: Level 4
+    ImageUrl: level-4
+    ConfigFileName: level-4
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
   - OrderIndex: 5
     UniqueID: 
-    RowCount: 4
+    RowCount: 5
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: Superman
-    ImageUrl: Superman
-    ConfigFileName: Superman
+    LevelName: Level 5
+    ImageUrl: level-5
+    ConfigFileName: level-5
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12138,9 +12138,9 @@ MonoBehaviour:
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: Black Panther
-    ImageUrl: BlackPanther
-    ConfigFileName: BlackPanther
+    LevelName: Level 6
+    ImageUrl: level-6
+    ConfigFileName: level-6
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12150,9 +12150,9 @@ MonoBehaviour:
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: Batman
-    ImageUrl: Batman
-    ConfigFileName: Batman
+    LevelName: Level 7
+    ImageUrl: level-7
+    ConfigFileName: level-7
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12162,9 +12162,9 @@ MonoBehaviour:
     ColCount: 3
     Size: 200
     AlwaysRandom: 1
-    LevelName: CaptainAmerica
-    ImageUrl: CaptainAmerica
-    ConfigFileName: CaptainAmerica
+    LevelName: Level 8
+    ImageUrl: level-8
+    ConfigFileName: level-8
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
@@ -12463,8 +12463,8 @@ RectTransform:
   m_Father: {fileID: 719361249}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 60, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12539,7 +12539,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13634,7 +13634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultSaveData:
-    MaxReachedLevel: 1
+    MaxReachedLevel: 8
     IsSoundActive: 1
     IsMusicActive: 1
     ActionScore: 0
@@ -15087,8 +15087,8 @@ RectTransform:
   m_Father: {fileID: 2001013991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 60, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -23058,7 +23058,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1843549551
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26535,7 +26535,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
