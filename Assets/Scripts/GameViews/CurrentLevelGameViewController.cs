@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Models;
-using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,6 +6,8 @@ using UnityEngine.UI;
 
 public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
 {
+    #region Singleton
+
     public static CurrentLevelGameViewController Instance { get; private set; }
     private void Awake()
     {
@@ -15,6 +16,10 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         else
             Destroy(gameObject);
     }
+
+    #endregion
+
+    #region General Parameters
 
     [Header("When user enter the first level we will display the tutorial view.")]
     public GameObject TutorialView;
@@ -31,180 +36,45 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
     [Header("We are going to print to user score.")]
     public TMP_Text TXTUserScore;
 
-    [Header("Playground item we will instantiate.")]
-    public GameObject CustomPlaygroundItem;
-
-    [Header("Playground item.")]
-    public GameObject CustomLevelPlaygroundItem;
-
-    [Header("Used buttons to rotate objects.")]
-    public GameObject CustomLevelRotateItem;
-
     [Header("Continue question when level history exists.")]
     public GameObject GOContinueQuestion;
+
+    [Header("Difficulity panel.")]
+    public GameObject AskForDifficulity;
 
     /// <summary>
     /// Active level when player select a level this value will change automatically.
     /// </summary>
-    public int CurrentLevel { get; set; }
+    public int CurrentLevel { get; private set; }
+
+    /// <summary>
+    /// Current game difficulity. Easy-> Slider,Normal -> Jigsaw, Hard -> Rotate
+    /// </summary>
+    public GameDifficulities GameDifficulity { get; private set; }
 
     /// <summary>
     /// Is this current level is a custom level.
     /// </summary>
-    public LevelStates CurrentLevelState { get; set; }
+    public LevelStates CurrentLevelState { get; private set; }
 
     /// <summary>
     /// Custom playground manager.
     /// </summary>
-    public PlaygroundController CPGC { get; set; }
+    public PlaygroundController CPGC { get; private set; }
 
     /// <summary>
     /// Shown level data.
     /// </summary>
-    public LevelEditorModel LevelData { get; set; }
+    public LevelEditorModel LevelData { get; private set; }
 
     /// <summary>
     /// Shown level texture data.
     /// </summary>
-    public Texture2D ShownLevelTexture2D { get; set; }
+    public Texture2D ShownLevelTexture2D { get; private set; }
 
-    public void OnGameViewActivated()
-    {
-    }
+    #endregion
 
-    public void LoadLevel(LevelEditorModel levelData, LevelStates levelState, int currentLevel)
-    {
-        // Level state.
-        this.CurrentLevelState = levelState;
-
-        // Level information.
-        this.CurrentLevel = currentLevel;
-
-        // if a custom level we will load from custom levels of user.
-        this.LevelData = levelData;
-
-        // We get the texture.
-        ShownLevelTexture2D = LevelData.LoadTextureFromFile();
-
-        // if already exists we destroy previous one.
-        if (CPGC != null)
-            Destroy(CPGC.gameObject);
-
-        // We are generating the ground item.
-        CPGC = Instantiate(CustomPlaygroundItem, transform).GetComponent<PlaygroundController>();
-
-        // We create the size.
-        CPGC.GridLayoutOfPlayGround.cellSize = new Vector2(LevelData.Size, LevelData.Size);
-
-        // We set the column count.
-        CPGC.GridLayoutOfPlayGround.constraintCount = LevelData.ColCount;
-
-        // We apply the hint texture.
-        CPGC.PGHC.LoadTexture(ShownLevelTexture2D, LevelData, CPGC.GridLayoutOfPlayGround.spacing);
-
-        // We activate the level.
-        ActivateLevel();
-
-        // We check button states again.
-        CheckPrevAndNextButtons();
-
-        // if not continue just shuffle and load level.
-        if (GameHistoryController.Instance.CheckIsHistoryExists(this.LevelData))
-            AskToContinue();
-    }
-
-    public void OnGameViewDeactivated()
-    {
-        // if playground exists we destroy it.
-        if (CPGC != null)
-            Destroy(CPGC.gameObject);
-    }
-
-    public void ActivateLevel()
-    {
-        // The content we will place pieces.
-        Transform piecesGridContent = CPGC.transform.Find("Items");
-
-        // We delete all the older pieces.
-        foreach (Transform pieces in piecesGridContent)
-            Destroy(pieces.gameObject);
-
-        // Name counter to save level state.
-        int nameCounter = 1;
-
-        // Textures are loading from bottom left corner.
-        for (int row = LevelData.RowCount - 1; row >= 0; row--)
-        {
-            // Loop the cols.
-            for (int col = 0; col < LevelData.ColCount; col++)
-            {
-                // Pixel start x position.
-                int pixelStartXPosition = col * LevelData.Size;
-
-                // Pixel start y position.
-                int pixelStartYPosition = row * LevelData.Size;
-
-                // We will bind image to this playground item.
-                GameObject playgroundItem = Instantiate(CustomLevelPlaygroundItem, piecesGridContent);
-
-                // We will apply the data into the playground item.
-                RawImage playgroundTexture = playgroundItem.GetComponent<RawImage>();
-
-                // We are receiving the offset pixels.
-                Color[] pixels = ShownLevelTexture2D.GetPixels(pixelStartXPosition, pixelStartYPosition, LevelData.Size, LevelData.Size);
-
-                // We are creating the part texture.
-                Texture2D texture = new Texture2D(LevelData.Size, LevelData.Size, TextureFormat.RGB24, false);
-
-                // We update the pixels.
-                texture.SetPixels(pixels);
-
-                // Then we apply our changes.
-                texture.Apply();
-
-                // First step is resize the texture.
-                playgroundTexture.texture = texture;
-
-                // Set the player name.
-                playgroundItem.transform.name = $"{nameCounter}";
-
-                // We increase the name counter.
-                nameCounter++;
-            }
-        }
-
-        // Döndürmeleri döneceğiz.
-        int rotationCount = (LevelData.RowCount - 1) * (LevelData.ColCount - 1);
-
-        // Content where we will put rotators.
-        Transform piecesRotatorContent = CPGC.transform.Find("Rotations");
-
-        // We delete all the older pieces.
-        foreach (Transform rotations in piecesRotatorContent)
-            Destroy(rotations.gameObject);
-
-        // We create the rotation items
-        for (int ii = 0; ii < rotationCount; ii++)
-            Instantiate(CustomLevelRotateItem, piecesRotatorContent);
-
-        // We update the rotation layout column count.
-        piecesRotatorContent.GetComponent<GridLayoutGroup>().constraintCount = LevelData.ColCount - 1;
-
-        // We create the grid system.
-        CPGC.LoadPlayGroundGrid(this.LevelData);
-
-        // We save the correct format.
-        CPGC.CorrectFormationItems = CPGC.Items.ToList();
-
-        // if random is enabled then we will shuffle it.
-        if (LevelData.AlwaysRandom)
-            CPGC.ShufflePlayground();
-        else // if not enabled we will load with seed value.
-            CPGC.ShufflePlayground(LevelData.SeedValue);
-
-        // We update the ui.
-        RefreshUI();
-    }
+    #region General Actions
 
     public void OnClickBack()
     {
@@ -321,15 +191,18 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         StartCoroutine(AdsController.Instance.AdsReward.ShowRewardedAd());
     }
 
-    public void AskToContinue() => GOContinueQuestion.SetActive(true);
-
     public void OnClickContinue()
     {
         // We disable the question view.
         GOContinueQuestion.SetActive(false);
 
         // We continue to level.
-        CPGC.ContinueToLevel();
+        if (GameDifficulity == GameDifficulities.RotatePuzzle)
+            CPGC.ContinueToLevel();
+        else if (GameDifficulity == GameDifficulities.JigsawPuzzle)
+            JP.ContinueToLevel();
+        else if (GameDifficulity == GameDifficulities.SliderPuzzle)
+            SPC.ContinueToLevel();
     }
 
     public void OnClickDontContinue()
@@ -338,6 +211,250 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
         GOContinueQuestion.SetActive(false);
 
         // We remove the history value.
-        GameHistoryController.Instance.RemoveHistory(CPGC);
+        GameHistoryController.Instance.RemoveHistory(this.LevelData, this.GameDifficulity);
     }
+
+    public void OnGameViewActivated() { }
+
+    public void OnGameViewDeactivated() { }
+
+    public void LoadLevel(LevelEditorModel levelData, LevelStates levelState, int currentLevel)
+    {
+        // We delete the older view.
+        if (CPGC != null)
+            Destroy(CPGC.gameObject);
+
+        // We delete the older jigsaw playground.
+        if (JP != null)
+            Destroy(JP.gameObject);
+
+        // We delete the older slider game.
+        if (SPC != null)
+            Destroy(SPC.gameObject);
+
+        // Level state.
+        this.CurrentLevelState = levelState;
+
+        // Level information.
+        this.CurrentLevel = currentLevel;
+
+        // if a custom level we will load from custom levels of user.
+        this.LevelData = levelData;
+
+        // We get the texture.
+        ShownLevelTexture2D = LevelData.LoadTextureFromFile();
+
+        // We show dhard difficulity.
+        AskForDifficulity.SetActive(true);
+
+        // We check button states again.
+        CheckPrevAndNextButtons();
+    }
+
+    #endregion
+
+    #region Slider Puzzle
+
+    [Header("Slider game template.")]
+    public GameObject SliderPlaygroundTemplate;
+
+    /// <summary>
+    /// Jigsaw playground.
+    /// </summary>
+    public SliderPlaygroundController SPC { get; private set; }
+
+    /// <summary>
+    /// On select slider puzzle.
+    /// </summary>
+    public void OnClickEasy()
+    {
+        // We set the difficulity.
+        GameDifficulity = GameDifficulities.SliderPuzzle;
+
+        // We close the difficulity panel.
+        AskForDifficulity.SetActive(false);
+
+        // We create a slider playground.
+        this.SPC = Instantiate(SliderPlaygroundTemplate, transform).GetComponent<SliderPlaygroundController>();
+
+        // We load the level details and image.
+        this.SPC.LoadLevel(this.LevelData, this.ShownLevelTexture2D);
+
+        // We apply the hint texture.
+        this.SPC.LHC.LoadTexture(this.ShownLevelTexture2D, this.LevelData, Vector2.zero);
+
+        // if not continue just shuffle and load level.
+        if (GameHistoryController.Instance.CheckIsHistoryExists(this.LevelData, GameDifficulity))
+            GOContinueQuestion.SetActive(true);
+    }
+
+    #endregion
+
+    #region Jigsaw Puzzle
+
+    [Header("Jigsaw game template.")]
+    public GameObject JigsawPlaygroundTemplate;
+
+    /// <summary>
+    /// Jigsaw playground.
+    /// </summary>
+    public JigsawPlayground JP { get; private set; }
+
+    /// <summary>
+    /// On select jigsaw puzzle.
+    /// </summary>
+    public void OnClickJigsawPuzzle()
+    {
+        // We set the difficulity.
+        this.GameDifficulity = GameDifficulities.JigsawPuzzle;
+
+        // We close the difficulity panel.
+        this.AskForDifficulity.SetActive(false);
+
+        // We create a jigsaw playground.
+        this.JP = Instantiate(JigsawPlaygroundTemplate, transform).GetComponent<JigsawPlayground>();
+
+        // We load the level details and image.
+        this.JP.LoadLevel(this.LevelData, this.ShownLevelTexture2D);
+
+        // We apply the hint texture.
+        this.JP.LHC.LoadTexture(this.ShownLevelTexture2D, this.LevelData, Vector2.zero);
+
+        // if not continue just shuffle and load level.
+        if (GameHistoryController.Instance.CheckIsHistoryExists(this.LevelData, GameDifficulity))
+            GOContinueQuestion.SetActive(true);
+    }
+
+    #endregion
+
+    #region Rotate Puzzle
+
+    [Header("Playground template we will instantiate.")]
+    public GameObject CustomPlaygroundItem;
+
+    [Header("Playground item.")]
+    public GameObject CustomLevelPlaygroundItem;
+
+    [Header("Used buttons to rotate objects.")]
+    public GameObject CustomLevelRotateItem;
+
+    /// <summary>
+    /// On select rotate puzzle.
+    /// </summary>
+    public void OnClickRotatePuzzle()
+    {
+        // We set the difficulitiy.
+        GameDifficulity = GameDifficulities.RotatePuzzle;
+
+        // We close the difficulity question panel.
+        AskForDifficulity.SetActive(false);
+
+        // We are generating the ground item.
+        CPGC = Instantiate(CustomPlaygroundItem, transform).GetComponent<PlaygroundController>();
+
+        // We create the size.
+        CPGC.GridLayoutOfPlayGround.cellSize = new Vector2(LevelData.Size, LevelData.Size);
+
+        // We set the column count.
+        CPGC.GridLayoutOfPlayGround.constraintCount = LevelData.ColCount;
+
+        // We apply the hint texture.
+        CPGC.PGHC.LoadTexture(ShownLevelTexture2D, LevelData, CPGC.GridLayoutOfPlayGround.spacing);
+
+        // We activate the level.
+        LoadRotategroundGameplay();
+
+        // if not continue just shuffle and load level.
+        if (GameHistoryController.Instance.CheckIsHistoryExists(this.LevelData, GameDifficulity))
+            GOContinueQuestion.SetActive(true);
+    }
+
+    public void LoadRotategroundGameplay()
+    {
+        // The content we will place pieces.
+        Transform piecesGridContent = CPGC.transform.Find("Items");
+
+        // We delete all the older pieces.
+        foreach (Transform pieces in piecesGridContent)
+            Destroy(pieces.gameObject);
+
+        // Name counter to save level state.
+        int nameCounter = 1;
+
+        // Textures are loading from bottom left corner.
+        for (int row = LevelData.RowCount - 1; row >= 0; row--)
+        {
+            // Loop the cols.
+            for (int col = 0; col < LevelData.ColCount; col++)
+            {
+                // Pixel start x position.
+                int pixelStartXPosition = col * LevelData.Size;
+
+                // Pixel start y position.
+                int pixelStartYPosition = row * LevelData.Size;
+
+                // We will bind image to this playground item.
+                GameObject playgroundItem = Instantiate(CustomLevelPlaygroundItem, piecesGridContent);
+
+                // We will apply the data into the playground item.
+                RawImage playgroundTexture = playgroundItem.GetComponent<RawImage>();
+
+                // We are receiving the offset pixels.
+                Color[] pixels = ShownLevelTexture2D.GetPixels(pixelStartXPosition, pixelStartYPosition, LevelData.Size, LevelData.Size);
+
+                // We are creating the part texture.
+                Texture2D texture = new Texture2D(LevelData.Size, LevelData.Size, TextureFormat.RGB24, false);
+
+                // We update the pixels.
+                texture.SetPixels(pixels);
+
+                // Then we apply our changes.
+                texture.Apply();
+
+                // First step is resize the texture.
+                playgroundTexture.texture = texture;
+
+                // Set the player name.
+                playgroundItem.transform.name = $"{nameCounter}";
+
+                // We increase the name counter.
+                nameCounter++;
+            }
+        }
+
+        // Döndürmeleri döneceğiz.
+        int rotationCount = (LevelData.RowCount - 1) * (LevelData.ColCount - 1);
+
+        // Content where we will put rotators.
+        Transform piecesRotatorContent = CPGC.transform.Find("Rotations");
+
+        // We delete all the older pieces.
+        foreach (Transform rotations in piecesRotatorContent)
+            Destroy(rotations.gameObject);
+
+        // We create the rotation items
+        for (int ii = 0; ii < rotationCount; ii++)
+            Instantiate(CustomLevelRotateItem, piecesRotatorContent);
+
+        // We update the rotation layout column count.
+        piecesRotatorContent.GetComponent<GridLayoutGroup>().constraintCount = LevelData.ColCount - 1;
+
+        // We create the grid system.
+        CPGC.LoadPlayGroundGrid(this.LevelData);
+
+        // We save the correct format.
+        CPGC.CorrectFormationItems = CPGC.Items.ToList();
+
+        // if random is enabled then we will shuffle it.
+        if (LevelData.AlwaysRandom)
+            CPGC.ShufflePlayground();
+        else // if not enabled we will load with seed value.
+            CPGC.ShufflePlayground(LevelData.SeedValue);
+
+        // We update the ui.
+        RefreshUI();
+    }
+
+    #endregion
+
 }

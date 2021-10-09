@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 public class PlaygroundController : MonoBehaviour
 {
     [Header("Current Custom level manager.")]
@@ -16,7 +14,7 @@ public class PlaygroundController : MonoBehaviour
     public PlayGroundFinalizerController PGFC;
 
     [Header("Hint controller.")]
-    public PlayGroundHintController PGHC;
+    public LevelHintController PGHC;
 
     [Header("Correct item formation.")]
     public List<PlayGroundItemController> CorrectFormationItems;
@@ -184,15 +182,18 @@ public class PlaygroundController : MonoBehaviour
         if (isCompleted)
         {
             // We remove history if the level completed.
-            GameHistoryController.Instance.RemoveHistory(this);
+            GameHistoryController.Instance.RemoveHistory(this.LevelData, GameDifficulities.RotatePuzzle);
 
             // We are finalizing the playground.
             PGFC.FinalizeThePlayGround();
         }
         else
         {
+            // Level pieces.
+            List<GameHistoryPieceModel> pieces = this.GridLayoutOfPlayGround.GetComponentsInChildren<RectTransform>().Select(x => new GameHistoryPieceModel(x.name)).ToList();
+
             // We remove history if the level completed.
-            GameHistoryController.Instance.SetHistory(this);
+            GameHistoryController.Instance.SetHistory(this.LevelData, GameDifficulities.RotatePuzzle, pieces);
         }
     }
 
@@ -227,18 +228,19 @@ public class PlaygroundController : MonoBehaviour
     public void ContinueToLevel()
     {
         // We get the history data.
-        GameHistoryModel historyValue = GameHistoryController.Instance.GetHistory(this.LevelData);
+        GameHistoryModel historyValue = GameHistoryController.Instance.GetHistory(this.LevelData, GameDifficulities.RotatePuzzle);
 
         // We will store the items with order indexes.
         List<Tuple<int, PlayGroundItemController>> unOrderedItems = new List<Tuple<int, PlayGroundItemController>>();
 
-        this.Items = this.Items.OrderBy(x => historyValue.Names.IndexOf(x.name)).ToList();
+        // Devam edilecke parçaları alıyoruz.
+        this.Items = this.Items.OrderBy(x => historyValue.HistoryPieces.FindIndex(y => y.PieceName == x.name)).ToList();
 
         // We loop all the items.
-        foreach (PlayGroundItemController playItem in this.Items.OrderBy(x => historyValue.Names.IndexOf(x.name)))
+        foreach (PlayGroundItemController playItem in this.Items.OrderBy(x => historyValue.HistoryPieces.FindIndex(y => y.PieceName == x.name)))
         {
             // we get the sibling index.
-            int siblingIndex = historyValue.Names.IndexOf(playItem.name);
+            int siblingIndex = historyValue.HistoryPieces.FindIndex(x => x.PieceName == playItem.name);
 
             // We change its location.
             playItem.transform.SetSiblingIndex(siblingIndex);

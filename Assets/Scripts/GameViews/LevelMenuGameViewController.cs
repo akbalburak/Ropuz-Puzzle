@@ -96,5 +96,4 @@ public class LevelMenuGameViewController : MonoBehaviour, IGameViewPanel
     {
         Application.OpenURL(GameController.Instance.GooglePlayUrl);
     }
-
 }

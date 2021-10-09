@@ -10,6 +10,7 @@ public class PlayGroundItemController : MonoBehaviour
     public bool IsRotationCompleted { get; private set; }
 
     private RectTransform Rect;
+
     // Start is called before the first frame update
     void Start()
     {
