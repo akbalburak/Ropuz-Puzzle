@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using Assets.Scripts.Extends;
 
 public class SliderPlaygroundController : MonoBehaviour
 {
@@ -36,15 +35,22 @@ public class SliderPlaygroundController : MonoBehaviour
 
     [Header("Slider playground items in scene.")]
     public List<SliderPlaygroundItemController> SliderPlaygroundItems;
-    private List<Tuple<int, int>> orderedIndex = new List<Tuple<int, int>>();
 
     /// <summary>
     /// Returns the empty piece.
     /// </summary>
     public SliderPlaygroundItemController GetEmptyPiece => SliderPlaygroundItems?.Find(x => !x.gameObject.activeInHierarchy);
 
+    /// <summary>
+    /// We use the generator to generate same random level.
+    /// </summary>
+    public System.Random Randomizer { get; set; }
+
     public void LoadLevel(LevelEditorModel levelData, Texture2D levelTexture)
     {
+        // We create a randomizer.
+        Randomizer = levelData.GetRandom();
+
         // We set the level data.
         this.LevelData = levelData;
 
@@ -83,15 +89,13 @@ public class SliderPlaygroundController : MonoBehaviour
                 rectTraOfSlider.anchoredPosition = position;
 
                 // Offset texture start position.
-                float offsetXTexture = -levelTexture.width / 2, offsetYTexture = -levelTexture.height / 2;
-
-                // Parse texture for the current grid.
-                float textureXSize = c * this.LevelData.Size + this.LevelData.Size / 2, textureYSize = r * this.LevelData.Size + this.LevelData.Size / 2;
+                float textureX = (this.LevelData.Size * this.LevelData.ColCount / (float)2) - (c * this.LevelData.Size + this.LevelData.Size / (float)2);
+                float textureY = (this.LevelData.Size * this.LevelData.RowCount / (float)2) - (r * this.LevelData.Size + this.LevelData.Size / (float)2);
 
                 // We set the piece texture with offset.
                 RawImage pieceBack = sliderItem.transform.Find("Puzzle/Back").GetComponent<RawImage>();
                 pieceBack.texture = levelTexture;
-                pieceBack.GetComponent<RectTransform>().anchoredPosition = new Vector2(offsetXTexture + textureXSize, offsetYTexture + textureYSize);
+                pieceBack.GetComponent<RectTransform>().anchoredPosition = new Vector2(textureX, textureY);
                 pieceBack.SetNativeSize();
 
                 // We get the slider item comp.
@@ -103,9 +107,6 @@ public class SliderPlaygroundController : MonoBehaviour
             }
         }
 
-        // Succeed layout.
-        orderedIndex = SliderPlaygroundItems.Select(x => new Tuple<int, int>(x.Col, x.Row)).ToList();
-
         // Piece to remove.
         SliderPlaygroundItemController removedPiece = SliderPlaygroundItems.FirstOrDefault();
 
@@ -114,7 +115,7 @@ public class SliderPlaygroundController : MonoBehaviour
             removedPiece.gameObject.SetActive(false);
 
         // We shuffle the playground items.
-        List<Tuple<int, int>> randomizedPlaygroundItems = SliderPlaygroundItems.OrderBy(x => Guid.NewGuid()).Select(x => new Tuple<int, int>(x.Col, x.Row)).ToList();
+        List<Tuple<int, int>> randomizedPlaygroundItems = SliderPlaygroundItems.OrderBy(x => Randomizer.NextDouble()).Select(x => new Tuple<int, int>(x.Col, x.Row)).ToList();
 
         // We change the positions of playground items.
         SliderPlaygroundItems.ForEach(e =>
@@ -134,7 +135,7 @@ public class SliderPlaygroundController : MonoBehaviour
         });
     }
 
-    public Vector2 GetPositionInGrid(int c, int r)
+    public Vector2 GetPositionInGrid(int col, int row)
     {
         // We get the position of slider pieces parent.
         Vector2 sliderPiecesParentPosition = GetComponent<RectTransform>().anchoredPosition;
@@ -144,24 +145,24 @@ public class SliderPlaygroundController : MonoBehaviour
         float bottomBorder = sliderPiecesParentPosition.y - (this.LevelData.Size * this.LevelData.RowCount) / (float)2;
 
         // We get the offset of texture..
-        float posX = leftBorder + this.LevelData.Size * c;
-        float posY = bottomBorder + this.LevelData.Size * r;
+        float posX = leftBorder + this.LevelData.Size * col;
+        float posY = bottomBorder + this.LevelData.Size * row;
 
         // We return the position.
         return new Vector2(posX, posY);
     }
 
-    public void UpdateEmptyGridData(int c, int r)
+    public void UpdateEmptyGridData(int col, int row)
     {
         // We look for the empty piece.
         SliderPlaygroundItemController emptyPiece = GetEmptyPiece;
 
         // We update piece position.
-        emptyPiece.RectTransform.anchoredPosition = GetPositionInGrid(c, r);
+        emptyPiece.RectTransform.anchoredPosition = GetPositionInGrid(col, row);
 
         // We update the empty position.
-        emptyPiece.Col = c;
-        emptyPiece.Row = r;
+        emptyPiece.Col = col;
+        emptyPiece.Row = row;
     }
 
     public void CheckForFinalization()
@@ -176,13 +177,13 @@ public class SliderPlaygroundController : MonoBehaviour
         CurrentLevelGameViewController.Instance.RefreshUI();
 
         // Level pieces.
-        List<GameHistoryPieceModel> pieces = SliderPlaygroundItems.Select(x => new GameHistoryPieceModel(x.PieceIndex, x.Col, x.Row)).ToList();
+        List<GameHistoryPieceModel> pieces = SliderPlaygroundItems.Select(x => new GameHistoryPieceModel(x.PieceIndex, x.OriColPosition, x.OriRowPosition, x.Col, x.Row)).ToList();
 
         // We remove history if the level completed.
         GameHistoryController.Instance.SetHistory(this.LevelData, GameDifficulities.SliderPuzzle, pieces);
 
         // We check is level completed.
-        if (Enumerable.SequenceEqual(SliderPlaygroundItems.Select(x => new Tuple<int, int>(x.Col, x.Row)), orderedIndex))
+        if (SliderPlaygroundItems.TrueForAll(x => x.IsInPosition()))
         {
             // Set as finalized.
             IsFinalized = true;
@@ -232,7 +233,7 @@ public class SliderPlaygroundController : MonoBehaviour
                 pieceInLevel.RectTransform.anchoredPosition = GetPositionInGrid(piece.Col, piece.Row);
 
                 // We set the data.
-                pieceInLevel.Load(piece.PieceIndex, piece.Col, piece.Row);
+                pieceInLevel.LoadWithPosition(piece.PieceIndex, piece.OriCol, piece.OriRow, piece.Col, piece.Row);
             }
         }
     }

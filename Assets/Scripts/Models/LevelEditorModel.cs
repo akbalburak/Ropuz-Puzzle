@@ -90,5 +90,13 @@ namespace Assets.Scripts.Models
                 UniqueID = Guid.NewGuid().ToString()
             };
         }
+
+        public System.Random GetRandom()
+        {
+            if (this.AlwaysRandom)
+                return new System.Random();
+            else
+                return new System.Random(SeedValue);
+        }
     }
 }

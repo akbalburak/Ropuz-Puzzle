@@ -1,9 +1,16 @@
+using System;
 using UnityEngine;
 
 public class SliderPlaygroundItemController : MonoBehaviour
 {
     [Header("Rect transform of slider piece.")]
     public RectTransform RectTransform;
+
+    [Header("Original row position.")]
+    public int OriRowPosition;
+
+    [Header("Original col position.")]
+    public int OriColPosition;
 
     [Header("Piece index number. Unique defined.")]
     public int PieceIndex;
@@ -54,13 +61,26 @@ public class SliderPlaygroundItemController : MonoBehaviour
     }
 
 
-    public void Load(int pieceIndex, int c, int r)
+    public void Load(int pieceIndex, int col, int row)
     {
         // We update row and col properties of piece.
-        this.Row = r;
-        this.Col = c;
+        this.Row = row;
+        this.Col = col;
+        this.OriRowPosition = row;
+        this.OriColPosition = col;
         this.PieceIndex = pieceIndex;
     }
+
+    public void LoadWithPosition(int pieceIndex, int oricol, int oriRow, int col, int row)
+    {
+        // We update row and col properties of piece.
+        this.Row = row;
+        this.Col = col;
+        this.OriRowPosition = oriRow;
+        this.OriColPosition = oricol;
+        this.PieceIndex = pieceIndex;
+    }
+
 
     private void Update()
     {
@@ -88,4 +108,5 @@ public class SliderPlaygroundItemController : MonoBehaviour
         }
     }
 
+    public bool IsInPosition() => this.OriColPosition == this.Col && this.OriRowPosition == this.Row;
 }

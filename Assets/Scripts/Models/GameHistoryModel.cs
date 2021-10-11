@@ -26,11 +26,18 @@ public class GameHistoryPieceModel
     [Header("Jigsaw piece y position.")]
     public float Y;
 
-    [Header("Jigsaw column index.")]
+    [Header("Jigsaw and slider column index.")]
     public int Col;
 
-    [Header("Jigsaw row index.")]
+    [Header("Jigsaw and slider row index.")]
     public int Row;
+
+    [Header("Slider correct column index.")]
+    public int OriCol;
+
+    [Header("Slider correct row index.")]
+    public int OriRow;
+
 
     /// <summary>
     /// We use this method to load rotate puzzle.
@@ -62,8 +69,10 @@ public class GameHistoryPieceModel
     /// <param name="pieceIndex">Piece unique index. To reorder when user reenter the level.</param>
     /// <param name="col">Column index of piece.</param>
     /// <param name="row">Row index of piece.</param>
-    public GameHistoryPieceModel(int pieceIndex, int col, int row)
+    public GameHistoryPieceModel(int pieceIndex, int oriCol, int oriRow, int col, int row)
     {
+        this.OriCol = oriCol;
+        this.OriRow = oriRow;
         this.PieceIndex = pieceIndex;
         this.Col = col;
         this.Row = row;

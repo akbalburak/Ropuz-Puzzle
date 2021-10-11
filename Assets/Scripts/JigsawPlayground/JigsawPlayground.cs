@@ -59,7 +59,15 @@ public class JigsawPlayground : MonoBehaviour
     [Header("Seçili olan parçalar. Ana parça da dahil.")]
     public List<JigsawPlaygroundItemController> SelectedPieces;
 
-    private Vector2 selectedPieceStartMPos;
+    /// <summary>
+    /// We use the generator to generate same random level.
+    /// </summary>
+    public System.Random Randomizer { get; set; }
+
+    /// <summary>
+    /// Mouse position to drag and drop.
+    /// </summary>
+    private Vector2 selectedPieceStartMPos { get; set; }
 
     private void Start()
     {
@@ -68,6 +76,9 @@ public class JigsawPlayground : MonoBehaviour
 
     public void LoadLevel(LevelEditorModel levelData, Texture2D levelTexture)
     {
+        // We create a randomizer.
+        Randomizer = levelData.GetRandom();
+
         // Seviye bilgisini atýyoruz.
         this.LevelData = levelData;
 
@@ -92,6 +103,7 @@ public class JigsawPlayground : MonoBehaviour
 
                 // Parçalarý oluþturuyoruz.
                 GameObject jigsawItem = Instantiate(JigsawPlaygroundItem, JigsawPlaygroundContent);
+                jigsawItem.GetComponent<RectTransform>().anchoredPosition = GetGivenPosition(c, r);
 
                 // Çizimi ve konumlandýrmasýný yapýyoruz.
                 jigsawItem.transform.Find("Puzzle").GetComponent<Image>().sprite = piece;
@@ -100,7 +112,7 @@ public class JigsawPlayground : MonoBehaviour
                 // Parçanýn görüntüleneceði alanaý hespalýyoruz..
                 RawImage pieceBack = jigsawItem.transform.Find("Puzzle/Back").GetComponent<RawImage>();
                 pieceBack.texture = levelTexture;
-                pieceBack.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX * -1, posY * -1);
+                pieceBack.GetComponent<RectTransform>().anchoredPosition = GetGivenPosition(c, r) * -1;
                 pieceBack.SetNativeSize();
 
                 // Ýndeksi bir arttýrýyoruz bir sonraki parçayý sýrasýyla yüklemek için.
@@ -116,7 +128,7 @@ public class JigsawPlayground : MonoBehaviour
         }
 
         // Rastgele sýra ile sýralamalarýný güncelliyoruz.
-        foreach (JigsawPlaygroundItemController levelPiece in LevelPieces.OrderBy(x => System.Guid.NewGuid()))
+        foreach (JigsawPlaygroundItemController levelPiece in LevelPieces.OrderBy(x => Randomizer.NextDouble()))
         {
             // UI sýralamasýný güncelliyoruz rastgele olarak.
             levelPiece.GetComponent<Canvas>().sortingOrder = 1;
@@ -531,13 +543,25 @@ public class JigsawPlayground : MonoBehaviour
     public Vector2 GetRandomPosition()
     {
         // Rastgele x koordinat alan içerisinde.
-        float x = Random.Range(SpawnArea.rect.min.x, SpawnArea.rect.max.x);
+        float x = SpawnArea.rect.min.x + (float)Randomizer.NextDouble() * (SpawnArea.rect.max.x - SpawnArea.rect.min.x);
 
         // Rastgele y koordinatý verilen alan içerisinde.
-        float y = Random.Range(SpawnArea.rect.min.y, SpawnArea.rect.max.y);
+        float y = SpawnArea.rect.min.y + (float)Randomizer.NextDouble() * (SpawnArea.rect.max.y - SpawnArea.rect.min.y);
 
         // Alaný geri dönüyoruz.
         return new Vector2(x, SpawnArea.rect.position.y - y);
+    }
+
+    public Vector2 GetGivenPosition(int col, int row)
+    {
+        // Rastgele x koordinat alan içerisinde.
+        float x = -(PerOffset * ColCount) / 2 + col * PerOffset + PerOffset / 2;
+
+        // Rastgele y koordinatý verilen alan içerisinde.
+        float y = -(PerOffset * RowCount) / 2 + row * PerOffset + PerOffset / 2;
+
+        // Alaný geri dönüyoruz.
+        return new Vector2(x, y);
     }
 
 }
