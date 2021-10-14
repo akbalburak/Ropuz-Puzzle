@@ -20,6 +20,17 @@ public class EditorPlaygroundController : MonoBehaviour
     [Header("Offset value of image.")]
     public Vector3 Offset;
 
+    public int GetSize
+    {
+        get
+        {
+            if (LevelDesignerGameViewController.Instance == null)
+                return 0;
+
+            return Mathf.FloorToInt(GLG.cellSize.x * LevelDesignerGameViewController.Instance.SLDScale.value);
+        }
+    }
+
     /// <summary>
     /// Row, Col, Texture
     /// </summary>
@@ -56,7 +67,7 @@ public class EditorPlaygroundController : MonoBehaviour
         GLG.constraintCount = colCount;
 
         // Per peace size, we think it is a square.;
-        int size = (int)GLG.cellSize.x;
+        int size = GetSize;
 
         // if there is no seleted texture then return.
         if (LDGVC.CurrentSelectedTexture == null)
@@ -82,8 +93,10 @@ public class EditorPlaygroundController : MonoBehaviour
         // We based the small side to rate.
         float smallRate = widthRate > heightRate ? heightRate : widthRate;
 
+        float scaleRate = LevelDesignerGameViewController.Instance.SLDScale.value;
+
         // We scale to fit.
-        transform.localScale = new Vector2(smallRate, smallRate);
+        transform.localScale = new Vector2(smallRate * scaleRate, smallRate * scaleRate);
 
         // We check the borders to prevent image goes outside of the grid. if image goes outside exception will be triggered by getpixels method.
         Offset = new Vector2(Mathf.Clamp(Offset.x, 0, LDGVC.CurrentSelectedTexture.width - colCount * size), Mathf.Clamp(Offset.y, 0, LDGVC.CurrentSelectedTexture.height - rowCount * size));
@@ -136,7 +149,7 @@ public class EditorPlaygroundController : MonoBehaviour
         int rowCount = (int)LDGVC.SLDRowCount.value;
 
         // Per peace size, we think it is a square.;
-        int size = (int)GLG.cellSize.x;
+        int size = (int)GetSize;
 
         // We check the borders to prevent image goes outside of the grid. if image goes outside exception will be triggered by getpixels method.
         Offset = new Vector2(Mathf.Clamp(Offset.x, 0, LDGVC.CurrentSelectedTexture.width - colCount * size),
@@ -186,6 +199,9 @@ public class EditorPlaygroundController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            GenerateGrid();
+
         // if puzzle is not dragging just returnç
         if (!IsPuzzleDragging)
             return;

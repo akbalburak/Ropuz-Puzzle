@@ -387,11 +387,12 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
             // Loop the cols.
             for (int col = 0; col < LevelData.ColCount; col++)
             {
+
                 // Pixel start x position.
-                int pixelStartXPosition = col * LevelData.Size;
+                int pixelStartXPosition = col * this.LevelData.Size;
 
                 // Pixel start y position.
-                int pixelStartYPosition = row * LevelData.Size;
+                int pixelStartYPosition = row * this.LevelData.Size;
 
                 // We will bind image to this playground item.
                 GameObject playgroundItem = Instantiate(CustomLevelPlaygroundItem, piecesGridContent);
@@ -400,10 +401,10 @@ public class CurrentLevelGameViewController : MonoBehaviour, IGameViewPanel
                 RawImage playgroundTexture = playgroundItem.GetComponent<RawImage>();
 
                 // We are receiving the offset pixels.
-                Color[] pixels = ShownLevelTexture2D.GetPixels(pixelStartXPosition, pixelStartYPosition, LevelData.Size, LevelData.Size);
+                Color[] pixels = ShownLevelTexture2D.GetPixels(pixelStartXPosition, pixelStartYPosition, this.LevelData.Size, this.LevelData.Size);
 
                 // We are creating the part texture.
-                Texture2D texture = new Texture2D(LevelData.Size, LevelData.Size, TextureFormat.RGB24, false);
+                Texture2D texture = new Texture2D(this.LevelData.Size, this.LevelData.Size, TextureFormat.RGB24, false);
 
                 // We update the pixels.
                 texture.SetPixels(pixels);

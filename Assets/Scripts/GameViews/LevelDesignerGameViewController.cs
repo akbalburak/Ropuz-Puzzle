@@ -41,6 +41,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
     [Header("Slider that we will read col count.")]
     public Slider SLDColCount;
 
+    [Header("Ölçeklendirme için kullanılacak.")]
+    public Slider SLDScale;
+
     [Header("Current selected row quantity")]
     public TMP_Text TXTRowCount;
 
@@ -115,6 +118,30 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         });
     }
 
+    private float CalculateTheMaxScale()
+    {
+        // if no texture then just return default value.
+        if (CurrentSelectedTexture == null)
+            return 1;
+
+        // if sizes are not implemented yet just return.
+        if (DDSizes.options.Count == 0)
+            return 1;
+
+        // We get the value in dd.
+        float.TryParse(DDSizes.options[DDSizes.value].text, out float size);
+
+        // We calculate the width and height max can be.
+        float xCellSize = CurrentSelectedTexture.width / (SLDColCount.value * size);
+        float yCellSize = CurrentSelectedTexture.height / (SLDRowCount.value * size);
+
+        // We decide which one is less.
+        float minSide = xCellSize > yCellSize ? yCellSize : xCellSize;
+
+        // Then we return it.
+        return minSide;
+    }
+
     public void InitializeDesigner()
     {
         // We decide is width or height is smaller than otherone.
@@ -155,6 +182,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
     public void OnRowCountChanged(float value)
     {
+        // Maksimum 
+        this.SLDScale.maxValue = CalculateTheMaxScale();
+
         // We reload the grid.
         EditorPlayground.GenerateGrid();
 
@@ -164,6 +194,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
 
     public void OnColumnCountChanged(float value)
     {
+        // Maksimum 
+        this.SLDScale.maxValue = CalculateTheMaxScale();
+
         // We reload the grid.
         EditorPlayground.GenerateGrid();
 
@@ -229,11 +262,19 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         // We set older row count with limations.
         SLDRowCount.SetValueWithoutNotify(oldRowCount);
 
+        // Maksimum 
+        this.SLDScale.maxValue = CalculateTheMaxScale();
+
         // We reload the grid.
         EditorPlayground.GenerateGrid();
 
         // We refresh ui
         RefreshUI();
+    }
+
+    public void OnScaleChanged(float scale)
+    {
+        EditorPlayground.GenerateGrid();
     }
 
     public void RefreshUI()
@@ -273,7 +314,7 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
         int rowCount = (int)SLDRowCount.value;
 
         // Size of grid cells.
-        int size = (int)EditorPlayground.GLG.cellSize.x;
+        int size = EditorPlayground.GetSize;
 
         // Pixel start x position.
         int pixelStartXPosition = (int)EditorPlayground.Offset.x;
@@ -321,6 +362,9 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
             orderIndex = UpdateModel.OrderIndex;
         }
 
+        // Scale rate for texture.
+        float scale = SLDScale.value;
+
         // We create level data.
         LevelEditorModel levelData = new LevelEditorModel
         {
@@ -332,7 +376,8 @@ public class LevelDesignerGameViewController : MonoBehaviour, IGameViewPanel
             LevelName = TXTLevelName.text,
             RowCount = rowCount,
             Size = size,
-            OrderIndex = orderIndex
+            OrderIndex = orderIndex,
+            ScaleRate = scale
         };
 
         // We start saving process.

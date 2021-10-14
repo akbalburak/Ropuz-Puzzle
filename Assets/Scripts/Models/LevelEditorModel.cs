@@ -41,7 +41,10 @@ namespace Assets.Scripts.Models
 
         [Header("Score point when user win the playground.")]
         public int ScoreOnWin;
-        
+
+        [Header("Scalling rate for texture.")]
+        public float ScaleRate;
+
         /// <summary>
         /// Downloaded texture.
         /// </summary>
