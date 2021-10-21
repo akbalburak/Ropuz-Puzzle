@@ -586,6 +586,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 0
     ScoreOnWin: 0
+    ScaleRate: 0
   INPUploadUrl: {fileID: 3176017279579447725}
   CustomPlaygroundItem: {fileID: 3058744265807446314, guid: c181060f97f61474199a08eadf34b04b, type: 3}
   CustomLevelPlaygroundItem: {fileID: 3024835586827234156, guid: ccd4e5e0b42ed1e4c8213d37420e894d, type: 3}
@@ -2086,6 +2087,7 @@ GameObject:
   - component: {fileID: 7411072710695925058}
   - component: {fileID: 6442811863518733358}
   - component: {fileID: 3610452067177722146}
+  - component: {fileID: 3293359034349513702}
   m_Layer: 5
   m_Name: StateText
   m_TagString: Untagged
@@ -2140,7 +2142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Haz\u0131rlan\u0131yor\n%50"
+  m_text: "Haz\u0131rlan\u0131yor"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a17181ced5491041b0130f532f6998d, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 3a17181ced5491041b0130f532f6998d, type: 2}
@@ -2209,6 +2211,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3293359034349513702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4715168431887162321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5754383e1bd53544bf885dafd969fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageItems:
+  - Language: 1
+    Value: Preparing...
+  - Language: 2
+    Value: "Haz\u0131rlan\u0131yor..."
 --- !u!1 &8145338141320743114
 GameObject:
   m_ObjectHideFlags: 0
