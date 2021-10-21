@@ -31,7 +31,7 @@ public class FirebaseStorageController : MonoBehaviour
     private StorageReference StorageRef;
 
     [Header("Bucket main url.")]
-    public string BucketUrl = $"gs://test-1576579639708.appspot.com/";
+    public string BucketUrl;
 
     [Header("Where users upload will be saved.")]
     public string SubFolderOfUsers = $"UserPlays";

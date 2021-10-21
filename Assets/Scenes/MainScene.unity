@@ -9737,7 +9737,7 @@ MonoBehaviour:
   m_text: "Bulmacay\u0131 ilk \xE7\xF6zen siz olun\nEkran g\xF6r\xFCnt\xFCs\xFC al\u0131n
     ve tweet at\u0131n\n@adabassar etiketiyle\nYeni seviyeler i\xE7in bir resim g\xF6nderin"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -13051,6 +13051,7 @@ MonoBehaviour:
     SeedValue: 12
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 2
     UniqueID: 
     RowCount: 2
@@ -13063,6 +13064,7 @@ MonoBehaviour:
     SeedValue: 8
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 3
     UniqueID: 
     RowCount: 3
@@ -13075,6 +13077,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 4
     UniqueID: 
     RowCount: 3
@@ -13087,6 +13090,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 5
     UniqueID: 
     RowCount: 5
@@ -13099,6 +13103,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 6
     UniqueID: 
     RowCount: 5
@@ -13111,6 +13116,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 7
     UniqueID: 
     RowCount: 5
@@ -13123,6 +13129,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   - OrderIndex: 8
     UniqueID: 
     RowCount: 5
@@ -13135,6 +13142,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 1
     ScoreOnWin: 100
+    ScaleRate: 0
   RotationSpeed: 10
   RotationQuantity: 4
   PolicyUrl: http://adabassar.com/PrivacyPolicy/PrivacyPolicy.htm
@@ -14280,7 +14288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultSaveData:
-    MaxReachedLevel: 8
+    MaxReachedLevel: 1
     IsSoundActive: 1
     IsMusicActive: 1
     ActionScore: 0
@@ -16576,7 +16584,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Level Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d869fdbe5349cba4997fea3045418dce, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -16640,7 +16648,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1183121396
@@ -17683,7 +17691,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 0}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
@@ -18083,7 +18091,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 0}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
@@ -19558,6 +19566,7 @@ MonoBehaviour:
     SeedValue: 0
     IsSystemDefined: 0
     ScoreOnWin: 0
+    ScaleRate: 0
   IMGLevel: {fileID: 1759243199}
   CurrentImgTexture: {fileID: 0}
   TXTLevelName: {fileID: 1183121395}
@@ -24638,7 +24647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe98ae13a8ba1b5419778d08b04997ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BucketUrl: gs://rotate-puzzle-4da81.appspot.com
+  BucketUrl: gs://rotate-puzzle-4da81.appspot.com/
   SubFolderOfUsers: UserLevels
 --- !u!4 &1788604716
 Transform:
@@ -26992,7 +27001,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\xC7evirmek i\xE7in dokun"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

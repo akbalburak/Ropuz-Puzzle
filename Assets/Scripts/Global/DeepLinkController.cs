@@ -27,10 +27,10 @@ public class DeepLinkController : MonoBehaviour
     }
 
     [Header("Main deeplink url.")]
-    public string Url = "https://ropuzpuzzle.page.link";
+    public string Url;
 
     [Header("Android app url to redirect if not exists.")]
-    public string AndroidAppUrl = "com.abbasgamestudio.RopuzBulmaca";
+    public string AndroidAppUrl;
 
     void Start()
     {

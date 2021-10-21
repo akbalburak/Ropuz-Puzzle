@@ -102,7 +102,7 @@ public class CustomLevelDetailUploadViewController : MonoBehaviour
                             this.gameObject.SetActive(true);
 
                             // We print the url to share.
-                            this.INPUploadUrl.text = url.ToString();
+                            this.INPUploadUrl.text = url?.ToString();
                         });
                     }
                 });
