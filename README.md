@@ -24,6 +24,14 @@ https://www.youtube.com/watch?v=qne1ZK4XZfE
 ![Custom-1](https://user-images.githubusercontent.com/20722654/153708839-7b5cb2c1-3319-41bf-a984-867b97ce1010.png)
 ![Custom-2](https://user-images.githubusercontent.com/20722654/153708841-4657a016-9282-4552-a579-2eaec2dc5e34.png)
 
+## Installation
+### APK Installation
+You can install the Ropuz.apk files in Apks folder to your mobile device.
+### Unity Installation
+- Install Firebase Storage, Firebase Push Notification and Deep Linking.
+- Install Admob
+- Install Native Galery plugin.
+    
 ## Used Technologies
 
 **Unity3D** Game developmen environment
