@@ -65,7 +65,6 @@ sysinfo.txt
 .vsconfig
 
 # Builds
-*.apk
 *.unitypackage
 
 # Crashlytics generated file
