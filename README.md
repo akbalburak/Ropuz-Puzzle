@@ -34,7 +34,7 @@ You can install the Ropuz.apk files in Apks folder to your mobile device.
     
 ## Used Technologies
 
-**Unity3D** Game developmen environment
+**Unity3D :** Game development environment
 
 **Firebase :** Storage, Push Notification, Deep Linking
 
